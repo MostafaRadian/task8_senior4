@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_provider/models/product_model.dart';
+import 'package:local_provider/providers/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProductItem extends StatelessWidget {
   final Product item;
@@ -16,13 +18,21 @@ class ProductItem extends StatelessWidget {
           Text("\$${item.price}"),
           const SizedBox(height: 8),
 
-          ElevatedButton(
-            onPressed: () {},
-            style: ElevatedButton.styleFrom(
-              backgroundColor: item.added ? Colors.redAccent : Colors.teal,
-              foregroundColor: Colors.white,
+          Consumer<ProductProvider>(
+            builder: (context, value, child) => ElevatedButton(
+              onPressed: () {
+                if (item.added) {
+                  value.removeFromCart(item);
+                } else {
+                  value.addToCart(item);
+                }
+              },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: item.added ? Colors.redAccent : Colors.teal,
+                foregroundColor: Colors.white,
+              ),
+              child: Text(item.added ? "Added ✓" : "Add to Cart"),
             ),
-            child: Text(item.added ? "Added ✓" : "Add to Cart"),
           ),
         ],
       ),

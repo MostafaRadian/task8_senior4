@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:local_provider/models/product_model.dart';
+import 'package:local_provider/providers/product_provider.dart';
+import 'package:provider/provider.dart';
 
 class CartItem extends StatelessWidget {
   Product item;
@@ -21,25 +23,26 @@ class CartItem extends StatelessWidget {
             IconButton(
               icon: Icon(Icons.remove),
               onPressed: () {
-                
+                context.read<ProductProvider>().decreseItems(item);
               },
             ),
 
-            Text(
-              "${item.quantity}",
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            Consumer<ProductProvider>(
+              builder: (context, value, child) => Text(
+                "${item.quantity}",
+                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              ),
             ),
 
             IconButton(
               icon: Icon(Icons.add),
               onPressed: () {
-
+                context.read<ProductProvider>().increaseItem(item);
               },
             ),
           ],
         ),
       ),
     );
-    
   }
 }
